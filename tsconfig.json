@@ -1,0 +1,29 @@
+// tsconfig.json (这是一个针对 Vite + React 的简化配置)
+{
+    "compilerOptions": {
+        "target": "ES2020",
+        "useDefineForClassFields": true,
+        "module": "ESNext",
+        "lib": [
+            "es2020",
+            "dom",
+            "dom.iterable"
+        ],
+        "skipLibCheck": true,
+        /* 模块和解析 */
+        "moduleResolution": "node", // 兼容 Node 16 推荐使用 'node'
+        "allowImportingTsExtensions": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        /* React/JSX */
+        "jsx": "react-jsx",
+        "allowJs": true, // 允许导入 .js 和 .jsx 文件
+        /* 严格性 */
+        "strict": true,
+        "esModuleInterop": true
+    },
+    "include": [
+        "src/**/*"
+    ], // 包含 src 目录下所有文件
+}
