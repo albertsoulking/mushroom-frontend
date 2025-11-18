@@ -20,7 +20,7 @@ const useAuth = () => {
         return date;
     };
 
-    const setAsLogged = (data) => {
+    const setAsLogged = (data: { is_login: boolean; user: any }) => {
         const cookie = new Cookies();
         cookie.set('is_auth', true, {
             expires: getAuthCookieExpiration(),
@@ -41,7 +41,7 @@ const useAuth = () => {
             path: '/'
         });
 
-        setAuthData({});
+        setAuthData({ is_login: false, user: null });
         navigate(web.login);
     };
 
@@ -53,19 +53,19 @@ const useAuth = () => {
             return;
         }
 
-        await api.check().then((response) => {
-            const { data } = response.data;
+        // await api.check().then((response) => {
+        //     const { data } = response.data;
 
-            if (!data.is_login) {
-                setLogout();
-                return;
-            }
+        //     if (!data.is_login) {
+        //         setLogout();
+        //         return;
+        //     }
 
-            setAuthData({ ...data });
-        });
+        //     setAuthData({ ...data });
+        // });
     };
 
-    const setLocalData = (key, value) => {
+    const setLocalData = (key: string, value: string) => {
         const cookies = new Cookies();
         cookies.set(key, value);
     };
@@ -77,7 +77,8 @@ const useAuth = () => {
 
     const removeLocalData = () => {
         const cookies = new Cookies();
-        Object.keys(cookies.cookies).forEach((name) => {
+        const allCookies = cookies.getAll();
+        Object.keys(allCookies).forEach((name) => {
             cookies.remove(name, {
                 expires: getAuthCookieExpiration(),
                 sameSite: 'lax',
@@ -85,7 +86,7 @@ const useAuth = () => {
                 path: '/'
             });
         });
-        
+
         navigate(web.home);
     };
 

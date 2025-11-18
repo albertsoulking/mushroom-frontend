@@ -1,12 +1,23 @@
 import { useEffect } from 'react';
 import { io } from 'socket.io-client';
 
-const socket = io(import.meta.env.VITE_API_BASE_URL, {
+const socket = io((import.meta as any).env.VITE_API_BASE_URL, {
     path: '/socket.io',
     transports: ['websocket', 'polling']
 });
 
-const useNotificationSocket = (onNotification) => {
+interface NotificationPayload {
+    userType: string;
+    userId: string | number;
+    [key: string]: any;
+}
+
+interface StoredUser {
+    id: string | number;
+    [key: string]: any;
+}
+
+const useNotificationSocket = (onNotification: (data: NotificationPayload) => void): void => {
     useEffect(() => {
         // 请求通知权限
         if ('Notification' in window && Notification.permission !== 'granted') {
@@ -17,8 +28,8 @@ const useNotificationSocket = (onNotification) => {
 
         socket.on('disconnect', () => {});
 
-        socket.on('notification', (data) => {
-            const user = JSON.parse(localStorage.getItem('user'));
+        socket.on('notification', (data: NotificationPayload | null) => {
+            const user = JSON.parse(localStorage.getItem('user') ?? 'null') as StoredUser | null;
             if (!user) return;
             if (!data) return;
             if (data.userType === 'admin') return;
